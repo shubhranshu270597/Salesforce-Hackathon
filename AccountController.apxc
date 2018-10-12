@@ -1,0 +1,62 @@
+public class AccountController {
+
+    @AuraEnabled
+    public static List<Account> findAll(){
+        
+        return [select Id, Name, AccountNumber,OwnerId,CreatedById,LastModifiedById,AccountSource,AnnualRevenue,Type,Industry,Description,Phone,Fax from Account LIMIT 15 ];
+    }
+    
+    @AuraEnabled
+    public static Map<String,String> saveAccountList(List<Account> lstAccount){
+        Map<String,String> result=new Map<String,String>();
+        
+        try{
+            update lstAccount;
+            result.put('status', 'success');
+            result.put('message', 'Account has been updated successfully.');
+            
+        }catch(Exception e){
+            
+            result.put('status', 'error');
+            result.put('message', e.getMessage());
+            
+        }
+        
+        return result;
+    }
+    
+    @AuraEnabled
+    public static Map<String,String> deleteAccounts(List<Id> lstAccountIds){
+        Map<String,String> result=new Map<String,String>();
+        List<Account> lst=[select Id from Account where Id in:lstAccountIds ];
+        try{
+            
+            delete lst;
+            result.put('status','success');
+            result.put('message','Account deleted successfully !');
+        }catch(Exception e){
+			result.put('status','error');
+            result.put('message',e.getMessage());            
+        }
+        
+        return result;
+    }
+    
+    @AuraEnabled
+    public static Map<String,String> createAccount(Account account){
+        Map<String,String> result=new Map<String,String>();
+        try{
+            
+            insert account;
+            result.put('status','success');
+            result.put('message','Account inserted successfully');
+            
+        }catch(Exception e){
+            
+            result.put('status','error');
+            result.put('message',e.getMessage());
+        }
+        return result;
+        
+    }
+}

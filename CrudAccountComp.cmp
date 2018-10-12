@@ -1,0 +1,82 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="trainrider2018.AccountController">
+    <aura:handler name="init" action="{!c.getAccountList}" value="{!this}" />
+    <aura:attribute name="accounts" type="List" />
+     <aura:attribute name="account" type="Account"
+      default="{
+            'SObjectType': 'Account',
+            'Name': '',
+            'Phone': ''
+               }" />       
+     <lightning:card title="Show My Accounts">
+        <p class="slds-p-horizontal_small">
+      <div aura:id="recordViewForm">
+        <aura:iteration items="{!v.accounts}" var="account">
+            <lightning:recordViewForm recordId="{!account.Id}" objectApiName="Account">
+                    <div class="slds-box slds-theme_default">
+                        <!-- outputfield used to output the record field data inside recordViewForm -->
+                        <lightning:input type="checkbox" value="{!account.Id}" label="Click me for delete" aura:id="deleteAccount" />
+                        <br />
+                        <lightning:outputField fieldName="Name" />
+                        <lightning:outputField fieldName="AccountNumber" />
+                        <lightning:outputField fieldName="Owner" />
+                        <lightning:outputField fieldName="AccountSource" />
+                        <lightning:outputField fieldName="AnnualRevenue" />
+                        <lightning:outputField fieldName="Type" />
+                        <lightning:outputField fieldName="CreatedBy" />
+                        <lightning:outputField fieldName="LastModifiedBy" />
+                        <lightning:outputField fieldName="Industry" />
+						<lightning:outputField fieldName="Description" />
+                        <lightning:outputField fieldName="Phone" />
+                        <lightning:outputField fieldName="Fax" />                        
+                    </div>
+            </lightning:recordViewForm>
+            <br />
+        </aura:iteration>
+        </div>    
+            <div aura:id="recordEditForm" class="formHide">
+                <aura:iteration items="{!v.accounts}" var="account">
+                    <div class="slds-box slds-theme_default">
+                        <lightning:input value="{!account.Name}" />
+                        <lightning:input value="{!account.AccountNumber}" />
+                        <lightning:input value="{!account.OwnerId}" />
+                        <lightning:input value="{!account.AccountSource}" />
+                        <lightning:input value="{!account.AnnualRevenue}" />
+                        <lightning:input value="{!account.Type}" />
+                        <lightning:input value="{!account.Industry}" />
+                        <lightning:input value="{!account.CreatedById}" />
+                      </div>
+                    <br />
+                    <!-- Line break between two records -->
+                </aura:iteration>
+            </div>
+     </p>
+        <!-- Lightning card actions -->
+        <aura:set attribute="actions">
+            <!-- New button added -->
+            <lightning:button name="accountModal" label="New Account" onclick="{!c.openModal}" />
+            <lightning:button label="New" onclick="{!c.newAccount}" />
+            <lightning:button label="Update Account Source" name="edit"  variant="brand" type="submit" onclick="{!c.editAccount}" />
+            <lightning:button label="Delete" name="delete" variant="destructive" onclick="{!c.deleteAccounts}" />
+          </aura:set>
+    </lightning:card>
+    
+    <div>
+        <section aura:id="accountModal" role="dialog" tabindex="-1" aria-labelledby="accountModalHeading" aria-modal="true" aria-describedby="accountModalBody" class="slds-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon class="slds-modal__close" alternativeText="Close" iconName="utility:close" onclick="{!c.closeModal}" variant="bare-inverse" size="large"></lightning:buttonIcon>
+                    <h2 id="accountModalHeading" class="slds-text-heading_medium slds-hyphenate">New Account</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="accountModalBody">
+                    <lightning:input label="Name" value="{!v.account.Name}" />
+                    <lightning:input label="Phone" value="{!v.account.Phone}" />
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button onclick="{!c.closeModal}" variant="neutral">Cancel</lightning:button>
+                    <lightning:button onclick="{!c.createAccount}" variant="brand" >Save</lightning:button>
+                </footer>
+            </div>
+        </section>
+        <div aura:id="accountModalBackdrop" class="slds-backdrop"></div>
+    </div>
+</aura:component>

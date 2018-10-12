@@ -1,0 +1,40 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="trainrider2018.AccountEditDeleteController">
+	<aura:handler name="init" value="{!this}" action="{!c.doOnLoad}"/>
+    
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:attribute name="editAccId" type="id"/>
+    <aura:attribute name="viewAccId" type="id"/>
+    <aura:attribute name="isEdit" type="boolean"/>
+	<aura:attribute name="isView" type="boolean"/>
+    <center>
+        <table>
+        <tr>
+        <th><b>Account Name</b></th>
+            <th><b>Account Phone</b></th>
+            <th><b>Action</b></th>
+        </tr><br/>
+    <aura:iteration items="{!v.accounts}"  var="acc">
+        
+        <tr>
+        <td>{!acc.Name}</td>
+        <td>{!acc.Phone}</td>
+            <td>
+                <button type="button" onclick="{!c.edit}" id="{!acc.Id}">Edit</button>&nbsp;&nbsp;
+            	<button type="button" onclick="{!c.view}" id="{!acc.Id}">View</button>&nbsp;&nbsp;
+                <button type="button" onclick="{!c.delete}" id="{!acc.Id}">Del</button>
+            </td>
+        </tr>
+        
+    </aura:iteration>
+    </table>
+    </center>
+    
+    <aura:renderIf isTrue="{!v.isEdit}">
+        <center><ui:button label="Save" press="{!c.save}"/></center>
+	    <force:recordEdit aura:id="edit" recordId="{!v.editAccId}"/>
+    </aura:renderIf>
+    
+    <aura:renderIf isTrue="{!v.isView}">
+	   <force:recordView aura:id="view" recordId="{!v.viewAccId}"/>
+	</aura:renderIf>
+</aura:component>
