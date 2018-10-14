@@ -7,6 +7,12 @@ public class AccountController {
     }
     
     @AuraEnabled
+    public static Account findById(String accountId){
+        
+        return [select Id, Name, AccountNumber,OwnerId,CreatedById,LastModifiedById,AccountSource,AnnualRevenue,Type,Industry,Description,Phone,Fax from Account where Id =:accountId];
+    }
+    
+    @AuraEnabled
     public static Map<String,String> saveAccountList(List<Account> lstAccount){
         Map<String,String> result=new Map<String,String>();
         
@@ -41,7 +47,8 @@ public class AccountController {
         
         return result;
     }
-    
+/*  
+ // previous code  
     @AuraEnabled
     public static Map<String,String> createAccount(Account account){
         Map<String,String> result=new Map<String,String>();
@@ -58,5 +65,13 @@ public class AccountController {
         }
         return result;
         
+    }
+  */
+    
+    // New code
+    @AuraEnabled
+    public static Id creatAccountRecord(Account account){
+        upsert account;
+        return account.id;
     }
 }
