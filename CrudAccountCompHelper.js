@@ -124,7 +124,8 @@
         });
         $A.enqueueAction(deleteAction);
     },
-    
+  /*  
+   // Previous Code
     insertAccount: function(component, event, helper) {
         var account = component.get("v.account");
         account.Id = component.get('v.recordId');
@@ -163,4 +164,18 @@
         });
         $A.enqueueAction(createAction);
     }
+    */
+    
+    // New code
+     insertAccount : function(component, event, helper) {     
+     var action = component.get("c.creatAccountRecord");
+            action.setParams({"account":component.get("v.account")});
+            action.setCallback(this,function(result){
+            component.set("v.isShow",false);
+            var accId = result.getReturnValue();
+            console.log('success');
+            alert('accId'+accId); 
+        });
+         $A.enqueueAction(action);
+ }
 })
